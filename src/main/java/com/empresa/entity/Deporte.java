@@ -11,9 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "deporte")
+@Table(name = "deporte") //nombre de la tabla en la bd
 public class Deporte {
 
+	//TABLA FORANEA
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idDeporte;

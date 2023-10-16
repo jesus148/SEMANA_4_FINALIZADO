@@ -19,16 +19,25 @@
 
  <div class="container">
  <h3>Crud de Modalidad</h3>
+ 
+ 
+ 
+ 
+ 
 		 <div class="col-md-23" >  
 
 				   <div class="row" style="height: 70px">
 						<div class="col-md-2" >
 								<input class="form-control" id="id_txt_filtro"  name="filtro" placeholder="Ingrese el nombre" type="text" maxlength="30"/>
 						</div>
+<!-- 						LISTA MODALIDAD -->
 						<div class="col-md-2" >
 							<button type="button" class="btn btn-primary" id="id_btn_filtrar" style="width: 150px">FILTRA</button>
 						</div>
+						
+<!-- 					     REGISTRA MODALIDA  -->
 						<div class="col-md-2">
+<!-- 						 data-target="#id_div_modal_registra" : aparece el modal -->
 							<button type="button" data-toggle='modal'  data-target="#id_div_modal_registra"  class='btn btn-success' style="width: 150px">REGISTRA</button>
 						</div>
 					</div>
@@ -39,6 +48,7 @@
 									<table id="id_table" class="table table-striped table-bordered" >
 										<thead>
 											<tr>
+<!-- 		aca mostrara los datos que quieres mostrar de la tabla de bd -->
 												<th style="width: 5%" >ID</th>
 												<th style="width: 25%">Nombre</th>
 												<th style="width: 8%">#Hombres</th>
@@ -47,8 +57,10 @@
 												<th style="width: 8%">Edad Min</th>
 												<th style="width: 8%">Sede</th>
 												<th style="width: 10%">Deporte</th>
-												<th style="width: 10%">Actualiza</th>
-												<th style="width: 10%">Elimina</th>
+												
+												
+												<th style="width: 10%">Actualiza</th><!-- 	 para editar -->
+												<th style="width: 10%">Elimina</th><!-- cambiar el estado-->
 											</tr>
 										</thead>
 											<tbody>
@@ -58,6 +70,13 @@
 						</div>
 					</div>
 		  </div>
+		  
+		  
+		  
+		  
+		  
+		  
+<!-- 		  MODAL PARA REGISTRAR  -->
   
   	 <div class="modal fade" id="id_div_modal_registra" >
 			<div class="modal-dialog" style="width: 60%">
@@ -69,6 +88,7 @@
 					<h4><span class="glyphicon glyphicon-ok-sign"></span> Registro de modalidad</h4>
 				</div>
 				<div class="modal-body" style="padding: 20px 10px;">
+<!-- 			id="id_form_registra"  : sirve para validar -->
 						<form id="id_form_registra" accept-charset="UTF-8" action="registraActualizaCrudModalidad" class="form-horizontal"     method="post">
 		                    <div class="panel-group" id="steps">
 		                        <!-- Step 1 -->
@@ -79,6 +99,7 @@
 		                            <div id="stepOne" class="panel-collapse collapse in">
 		                                <div class="panel-body">
 		                                     <div class="form-group">
+<!-- 		                                     recordar que lo name debes ser igual al la tabla  , atributos -->
 		                                        <label class="col-lg-3 control-label" for="id_reg_nombre">Nombre</label>
 		                                        <div class="col-lg-8">
 													<input class="form-control" id="id_reg_nombre" name="nombre" placeholder="Ingrese el Nombre" type="text" maxlength="20"/>
@@ -140,6 +161,12 @@
 			
 		</div>
   
+  
+  
+  
+  
+  
+<!--   MODAL PARA ELIMINAR  -->
 		 <div class="modal fade" id="id_div_modal_actualiza" >
 			<div class="modal-dialog" style="width: 60%">
 		
@@ -159,6 +186,7 @@
 		                            <div id="stepOne" class="panel-collapse collapse in">
 		                                <div class="panel-body">
 		                                    <div class="form-group">
+<!-- 		                                    el ID NO SE ACTUALIZA  -->
 		                                        <label class="col-lg-3 control-label" for="id_ID">ID</label>
 		                                        <div class="col-lg-8">
 		                                           <input class="form-control" id="id_ID" readonly="readonly" name="idModalidad" type="text" maxlength="8"/>
@@ -228,22 +256,49 @@
 
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
+
+// CARGA COMBO CUANDO INCIA TANTO EN MODAL RGISRA Y EN EL ACTUALIZA, RECORDAR que cuando llama a un controller busca en todos controller del paquete 
+//controller , listaDeporte se encuentra en el registramodalidadcontrolller
 $.getJSON("listaDeporte", {}, function(data){
 	$.each(data, function(i,item){
+		//id de los combos modales               atributos igual a la clase guia
 		$("#id_reg_deporte").append("<option value="+item.idDeporte +">"+ item.nombre +"</option>");
 		$("#id_act_deporte").append("<option value="+item.idDeporte +">"+ item.nombre +"</option>");
 	});
 });
 
 
+
+
+
+
+// ESTO SIRVA PARA LISTAR TODO(caso sea vacio) y cuando escribamos listara segun eso
+//id del boton filtro
 $("#id_btn_filtrar").click(function(){
-	var fil=$("#id_txt_filtro").val();
+	var fil=$("#id_txt_filtro").val(); //id del input 
+	//Id del controller              "filtro":fil : donde el   "filtro" parametro igual en el controller
 	$.getJSON("consultaCrudModalidad",{"filtro":fil}, function (lista){
 		agregarGrilla(lista);
 	});
 });
 
+
+
+
+
+//METODO AGREGA EN LA TABLA
 function agregarGrilla(lista){
 	 $('#id_table').DataTable().clear();
 	 $('#id_table').DataTable().destroy();
@@ -255,6 +310,8 @@ function agregarGrilla(lista){
 			pageLength: 5,
 			lengthChange: false,
 			columns:[
+				//MOSTRANDO LOS DATOS QUE QUEREMOS
+				//atributos igual a la clase guia
 				{data: "idModalidad"},
 				{data: "nombre"},
 				{data: "numHombres"},
@@ -262,12 +319,15 @@ function agregarGrilla(lista){
 				{data: "edadMaxima"},
 				{data: "edadMinima"},
 				{data: "sede"},
+				//deporte.nombre : deporte es el nombre de la clase guia foranea , nombre lo q quiero de esa clase
 				{data: "deporte.nombre"},
+				//MODAL EDITAR O ACTUALIZAR , RECIBE PARAMETROS , el id .etc
 				{data: function(row, type, val, meta){
 					var salida='<button type="button" style="width: 90px" class="btn btn-info btn-sm" onclick="editar(\''+row.idModalidad + '\',\'' + row.nombre +'\',\'' + row.numHombres  +'\',\'' + row.numMujeres + '\',\'' + row.edadMaxima + '\',\'' +  row.edadMinima + '\',\'' +  row.sede + '\',\'' + row.deporte.idDeporte + '\')">Editar</button>';
 					return salida;
 				},className:'text-center'},	
-				{data: function(row, type, val, meta){
+				//SOLO CAMBIA EL ESTADO
+				{data: function(row, type, val, meta){                                                                         //evento se envia el id                                                                                   //esto solo es para mostrar activo o inativo
 				    var salida='<button type="button" style="width: 90px" class="btn btn-warning btn-sm" onclick="accionEliminar(\'' + row.idModalidad + '\')">'+ (row.estado == 1? 'Activo':'Inactvo') +  '</button>';
 					return salida;
 				},className:'text-center'},													
@@ -276,12 +336,15 @@ function agregarGrilla(lista){
 }
 
 
+//METODO ELIMINAR SOLO CAMBIA EL ESTADO
+
 function accionEliminar(id){	
     $.ajax({
           type: "POST",
-          url: "eliminaCrudModalidad", 
-          data: {"id":id},
+          url: "eliminaCrudModalidad",  //URL DEL CONTROLADOR
+          data: {"id":id}, //"id" igual en el parametro del controlador metodo
           success: function(data){
+        	  //lista debe ser igual al "lista" del controller
         	  agregarGrilla(data.lista);
           },
           error: function(){
@@ -290,8 +353,15 @@ function accionEliminar(id){
      });
 }
 
+
+
+
+
+//FUNCION PARA MOSTRAR EL MODAL ACTUALIZA
+//recibe parametro y los pone en los inputs
 function editar(id,nombre,numHombres,numMujeres,edadMaxima, edadMinima,sede, idDeporte){	
-	$('#id_ID').val(id);
+	//poniendo en los inputs
+	$('#id_ID').val(id); 
 	$('#id_act_nombre').val(nombre);
 	$('#id_act_num_hombres').val(numHombres);
 	$('#id_act_num_mujeres').val(numMujeres);
@@ -299,9 +369,11 @@ function editar(id,nombre,numHombres,numMujeres,edadMaxima, edadMinima,sede, idD
 	$('#id_act_maxima').val(edadMinima);
 	$('#id_act_deporte').val(idDeporte);
 	$('#id_act_sede').val(sede);
-	$('#id_div_modal_actualiza').modal("show");
+	$('#id_div_modal_actualiza').modal("show"); //MUESTRA EL MODAL
 }
 
+
+//METODO PARA LIMPIAR INPUTS DEL MO0DAL REGISTRA
 function limpiarFormulario(){	
 	$('#id_reg_num_hombres').val('');
 	$('#id_reg_num_mujeres').val('');
@@ -311,7 +383,13 @@ function limpiarFormulario(){
 	$('#id_reg_deporte').val(' ');
 }
 
+
+
+
+//PARA REGISTRAR MODALIDAD
+//id del modal registrar
 $("#id_btn_registra").click(function(){
+	//llama al validator del modal registra + abajo , id_form_registra el id del form
 	var validator = $('#id_form_registra').data('bootstrapValidator');
     validator.validate();
 	
@@ -319,13 +397,13 @@ $("#id_btn_registra").click(function(){
         $.ajax({
           type: "POST",
           url: "registraCrudModalidad", 
-          data: $('#id_form_registra').serialize(),
+          data: $('#id_form_registra').serialize(), //enviamos todo de ese form
           success: function(data){
-        	  agregarGrilla(data.lista);
-        	  $('#id_div_modal_registra').modal("hide");
-        	  mostrarMensaje(data.mensaje);
-        	  limpiarFormulario();
-        	  validator.resetForm();
+        	  agregarGrilla(data.lista);//agrega a la grilla , LISTA NUEVAMENTE, lista debe ser igual al map lista
+        	  $('#id_div_modal_registra').modal("hide"); //esconde el modal
+        	  mostrarMensaje(data.mensaje);//muestra mensaje, mensaje debe ser igual en el controller en el map
+        	  limpiarFormulario();//limpia formulario
+        	  validator.resetForm();//resetea validator
           },
           error: function(){
         	  mostrarMensaje(MSG_ERROR);
@@ -335,18 +413,28 @@ $("#id_btn_registra").click(function(){
     }
 });
 
+
+
+
+
+
+//METODO Q ACTUALIZARA
+//este es el id del boton 
 $("#id_btn_actualiza").click(function(){
+	//el id del form actualiza , pa validar 
 	var validator = $('#id_form_actualiza').data('bootstrapValidator');
     validator.validate();
+    
+    
     if (validator.isValid()) {
         $.ajax({
           type: "POST",
-          url: "actualizaCrudModalidad", 
-          data: $('#id_form_actualiza').serialize(),
+          url: "actualizaCrudModalidad",  //URL DEL DEL CONTROLLER
+          data: $('#id_form_actualiza').serialize(), //ENVIO TODO EL FORM
           success: function(data){
-        	  agregarGrilla(data.lista);
+        	  agregarGrilla(data.lista); //OBTIEN LA LISTA DEL MAP
         	  $('#id_div_modal_actualiza').modal("hide");
-        	  mostrarMensaje(data.mensaje);
+        	  mostrarMensaje(data.mensaje);//OBITENE MENSAJE DEL MAP
           },
           error: function(){
         	  mostrarMensaje(MSG_ERROR);
@@ -359,7 +447,13 @@ $("#id_btn_actualiza").click(function(){
 
 </script>
 
+
+
+<!-- VALIDACIONES MODAL REGISTRA -->
 <script type="text/javascript">
+
+//el id del form modal registra
+
 	$('#id_form_registra').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -368,8 +462,9 @@ $("#id_btn_actualiza").click(function(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
+        	//name de los inputs, igual a la clase guia
         	"nombre": {
-        		selector : '#id_reg_nombre',
+        		selector : '#id_reg_nombre', //el id de los inputs
                 validators: {
                     notEmpty: {
                         message: 'El nombre es un campo obligatorio'
@@ -466,6 +561,7 @@ $("#id_btn_actualiza").click(function(){
                     }
                 }
             },
+            //clase guia, y lo que quiero, valida el value , verificando q se envie el value
             "deporte.idDeporte": {
         		selector : '#id_reg_deporte',
                 validators: {
@@ -479,6 +575,9 @@ $("#id_btn_actualiza").click(function(){
     });
 </script>
 
+
+
+<!-- VALIDACIONES PARA EL MODAL ACTUALIZA -->
 <script type="text/javascript">
 	$('#id_form_actualiza').bootstrapValidator({
         message: 'This value is not valid',

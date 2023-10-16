@@ -19,9 +19,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "modalidad")
+@Table(name = "modalidad") //nombre de la tabla en la bd
 public class Modalidad {
 
+	
+	//recordar los atributos iguales a la bd
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idModalidad;
@@ -42,6 +44,7 @@ public class Modalidad {
 	private Date fechaActualizacion;
 	
 	
+	//combo o llave foranea
 	@ManyToOne
 	@JoinColumn(name = "idDeporte")
 	private Deporte deporte;
